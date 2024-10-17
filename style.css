@@ -1,0 +1,61 @@
+/* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #f8b400;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+}
+
+.chord-selector {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#chord-select {
+    padding: 5px;
+    font-size: 16px;
+}
+
+#add-chord-btn, #clear-chords-btn {
+    padding: 5px 10px;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+#chord-display {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.chord-card {
+    margin: 10px;
+    text-align: center;
+}
+
+.chord-card img {
+    max-width: 100px;
+    height: auto;
+}
+
+@media (max-width: 600px) {
+    #chord-select, #add-chord-btn, #clear-chords-btn {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .chord-card img {
+        max-width: 80px;
+    }
+}
