@@ -44,8 +44,8 @@ main {
     text-align: center;
 }
 
-.chord-card img {
-    max-width: 100px;
+.chord-diagram {
+    width: 100px;
     height: auto;
 }
 
@@ -55,7 +55,7 @@ main {
         margin: 5px 0;
     }
 
-    .chord-card img {
-        max-width: 80px;
+    .chord-diagram {
+        width: 80px;
     }
 }

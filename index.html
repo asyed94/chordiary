@@ -1,3 +1,5 @@
+<!-- index.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,14 +8,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Link to external CSS -->
     <link rel="stylesheet" href="styles.css">
+    <!-- Include ChordJS library -->
+    <script src="https://cdn.jsdelivr.net/npm/@tombatossals/chords-db@2.1.2/lib/ChordJS.min.js"></script>
 </head>
 <body>
 
     <header>
-        <h1>Ukulele Chord Finder</h1>
+        <h1>The Chordiary</h1>
     </header>
 
     <main>
+        <p>
+            A website consisting of a collection of descriptions of real and fabulous chords, often including a moral or allegorical interpretation of each chord's behavior.
+        </p> 
+
         <section class="chord-selector">
             <label for="chord-select">Choose a chord:</label>
             <select id="chord-select">
@@ -24,7 +32,7 @@
         </section>
 
         <section id="chord-display">
-            <!-- Chord diagrams will be displayed here -->
+            <!-- Chord diagrams will be rendered here -->
         </section>
     </main>
 
