@@ -21,7 +21,6 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: relative;
         }
         h1, h2 {
             text-align: center;
@@ -90,20 +89,33 @@
             background-color: rgba(255, 255, 255, 0.7);
             border-radius: 5px;
         }
+        #contribute-section {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px 0;
+            border-top: 2px solid #8b4513;
+        }
         #contribute-link {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #4a4a4a;
-            color: white;
+            display: inline-block;
+            background-color: #8b4513;
+            color: #f0e6d2;
             text-decoration: none;
-            padding: 5px 10px;
+            padding: 10px 20px;
             border-radius: 5px;
-            font-size: 14px;
-            transition: background-color 0.3s;
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 18px;
+            transition: all 0.3s;
+            border: 2px solid #5c2c0e;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         #contribute-link:hover {
-            background-color: #666;
+            background-color: #a0522d;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #contribute-link:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         @media (max-width: 600px) {
             .container {
@@ -114,9 +126,8 @@
                 padding: 8px 12px;
             }
             #contribute-link {
-                top: 5px;
-                right: 5px;
-                font-size: 12px;
+                font-size: 16px;
+                padding: 8px 16px;
             }
         }
     </style>
@@ -124,7 +135,6 @@
 </head>
 <body>
     <div class="container">
-        <a id="contribute-link" href="https://github.com/asyed94/chordiary" target="_blank">Contribute</a>
         <h1>The Chordiary</h1>
         <h2>A Ukulele Chord Bestiary</h2>
         <div id="chord-selector"></div>
@@ -136,6 +146,9 @@
         <div id="chord-display"></div>
         <div id="bestiary">
             <h2>The Bestiary of Chords</h2>
+        </div>
+        <div id="contribute-section">
+            <a id="contribute-link" href="https://github.com/asyed94/chordiary" target="_blank">Contribute to the Chordiary</a>
         </div>
     </div>
 
