@@ -1,42 +1,223 @@
-<!-- index.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>The Chordiary</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Link to external CSS -->
-    <link rel="stylesheet" href="styles.css">
-    <!-- Include ChordJS library -->
-    <script src="https://cdn.jsdelivr.net/npm/@tombatossals/chords-db@2.1.2/lib/ChordJS.min.js"></script>
+    <title>The Chordiary - A Ukulele Chord Bestiary</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0e6d2;
+            color: #2c2c2c;
+            margin: 0;
+            padding: 20px;
+            background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #8b4513;
+            font-family: 'Uncial Antiqua', cursive;
+        }
+        #chord-selector, #chord-display, #sequence-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #8b4513;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #a0522d;
+        }
+        .chord-diagram {
+            text-align: center;
+            margin: 10px;
+            position: relative;
+            width: 200px;
+        }
+        .chord-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .chord-description {
+            font-size: 14px;
+            font-style: italic;
+            margin-top: 5px;
+            text-align: justify;
+        }
+        .remove-chord {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #ff4136;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            line-height: 1;
+            cursor: pointer;
+        }
+        #bestiary {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(139, 69, 19, 0.1);
+            border-radius: 10px;
+        }
+        .bestiary-entry {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 5px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            button {
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <header>
+    <div class="container">
         <h1>The Chordiary</h1>
-    </header>
+        <h2>A Ukulele Chord Bestiary</h2>
+        <div id="chord-selector"></div>
+        <h2>Your Chord Sequence</h2>
+        <div id="sequence-controls">
+            <button id="remove-last">Remove Last Chord</button>
+            <button id="clear-sequence">Clear Sequence</button>
+        </div>
+        <div id="chord-display"></div>
+        <div id="bestiary">
+            <h2>The Bestiary of Chords</h2>
+        </div>
+    </div>
 
-    <main>
-        <p>
-            A website consisting of a collection of descriptions of real and fabulous chords, often including a moral or allegorical interpretation of each chord's behavior.
-        </p> 
+    <script>
+        const chords = [
+            { name: 'C', positions: [0, 0, 0, 3], description: "The noble C chord, a gentle giant among ukulele chords. Its soothing tone brings harmony to any melody it touches, teaching us the virtue of simplicity." },
+            { name: 'G', positions: [0, 2, 3, 2], description: "The sprightly G chord, a mischievous sprite that dances through songs. Its bright sound reminds us to find joy in life's simple pleasures." },
+            { name: 'F', positions: [2, 0, 1, 0], description: "The wise F chord, an ancient sage of the ukulele realm. Its mellow timbre imparts the lesson that true strength lies in flexibility." },
+            { name: 'Am', positions: [2, 0, 0, 0], description: "The melancholic Am chord, a wistful spirit of the strings. It teaches us that even in sadness, there is beauty and growth." },
+            { name: 'D', positions: [2, 2, 2, 0], description: "The valiant D chord, a brave knight of harmony. Its bold sound encourages us to face challenges with courage and determination." },
+            { name: 'Em', positions: [0, 4, 3, 2], description: "The mysterious Em chord, a shadowy figure in the ukulele forest. Its haunting tone reminds us that complexity often hides in apparent simplicity." }
+        ];
 
-        <section class="chord-selector">
-            <label for="chord-select">Choose a chord:</label>
-            <select id="chord-select">
-                <!-- Options will be populated dynamically -->
-            </select>
-            <button id="add-chord-btn">Add Chord</button>
-            <button id="clear-chords-btn">Clear Chords</button>
-        </section>
+        const chordSelector = document.getElementById('chord-selector');
+        const chordDisplay = document.getElementById('chord-display');
+        const clearSequenceBtn = document.getElementById('clear-sequence');
+        const removeLastBtn = document.getElementById('remove-last');
+        const bestiary = document.getElementById('bestiary');
 
-        <section id="chord-display">
-            <!-- Chord diagrams will be rendered here -->
-        </section>
-    </main>
+        chords.forEach(chord => {
+            const button = document.createElement('button');
+            button.textContent = chord.name;
+            button.addEventListener('click', () => addChord(chord));
+            chordSelector.appendChild(button);
 
-    <!-- Link to external JavaScript -->
-    <script src="script.js"></script>
+            const bestiaryEntry = document.createElement('div');
+            bestiaryEntry.className = 'bestiary-entry';
+            bestiaryEntry.innerHTML = `<h3>${chord.name} Chord</h3><p>${chord.description}</p>`;
+            bestiary.appendChild(bestiaryEntry);
+        });
+
+        clearSequenceBtn.addEventListener('click', clearSequence);
+        removeLastBtn.addEventListener('click', removeLastChord);
+
+        function addChord(chord) {
+            const chordDiv = document.createElement('div');
+            chordDiv.className = 'chord-diagram';
+
+            const chordName = document.createElement('div');
+            chordName.className = 'chord-name';
+            chordName.textContent = chord.name;
+            chordDiv.appendChild(chordName);
+
+            const svgContainer = document.createElement('div');
+            chordDiv.appendChild(svgContainer);
+
+            const draw = SVG().addTo(svgContainer).size(100, 120);
+            drawChord(draw, chord.positions);
+
+            const chordDescription = document.createElement('div');
+            chordDescription.className = 'chord-description';
+            chordDescription.textContent = chord.description;
+            chordDiv.appendChild(chordDescription);
+
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-chord';
+            removeBtn.textContent = 'x';
+            removeBtn.addEventListener('click', () => removeChord(chordDiv));
+            chordDiv.appendChild(removeBtn);
+
+            chordDisplay.appendChild(chordDiv);
+        }
+
+        function removeChord(chordDiv) {
+            chordDisplay.removeChild(chordDiv);
+        }
+
+        function clearSequence() {
+            chordDisplay.innerHTML = '';
+        }
+
+        function removeLastChord() {
+            if (chordDisplay.lastChild) {
+                chordDisplay.removeChild(chordDisplay.lastChild);
+            }
+        }
+
+        function drawChord(draw, positions) {
+            // Draw fretboard
+            draw.rect(80, 100).move(10, 10).fill('none').stroke({ color: '#000', width: 2 });
+
+            // Draw frets
+            for (let i = 1; i <= 3; i++) {
+                draw.line(10, 10 + i * 25, 90, 10 + i * 25).stroke({ color: '#000', width: 1 });
+            }
+
+            // Draw strings
+            for (let i = 0; i < 4; i++) {
+                draw.line(10 + i * 20, 10, 10 + i * 20, 110).stroke({ color: '#000', width: 1 });
+            }
+
+            // Draw finger positions
+            positions.forEach((fret, string) => {
+                if (fret > 0) {
+                    draw.circle(16)
+                        .center(10 + string * 20, 10 + (fret - 0.5) * 25)
+                        .fill('#000');
+                } else if (fret === 0) {
+                    draw.circle(6)
+                        .center(10 + string * 20, 5)
+                        .fill('#000');
+                }
+            });
+        }
+    </script>
 </body>
 </html>
